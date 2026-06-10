@@ -1,0 +1,650 @@
+% Bu belge ÇOMÜ LEE odaklı bir tez yazım şablonudur.
+% Resmi bağlayıcılığı yoktur ve kurumsal kuralların yerine geçmez.
+% Kullanımından doğabilecek sonuçlardan hazırlayan sorumlu değildir.
+
+% Hazırlayan: Dr. Ulya BAYRAM
+% Haziran 2026
+
+% (Bu şablonu danışmanlığımdaki yüksek lisans öğrencileri için hazırladım. Genel kullanım amacıyla paylaşılmıştır. Lisansüstü tez yazım sürecinde olan ve LaTeX template ihtiyacı duyanların kullanımına yukarıda belirtilen kurallar dahilinde açıktır.)
+
+\documentclass[12pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,left=3cm, top=3cm, right=2.5cm, bottom=2.5cm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{longtable}
+\usepackage{tocloft}
+\usepackage[authoryear,round]{natbib}
+\usepackage{newtxtext,newtxmath}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{ragged2e}
+\usepackage[stretch=15,shrink=15,tracking=true]{microtype}
+\SetTracking{encoding=*}{80}
+\usepackage{etoolbox}
+\usepackage[none]{hyphenat}
+
+\usepackage{caption}
+
+\usepackage{lipsum} % BU SATIRI SİL KENDİ  TEZİNİ YAZARKEN
+
+%\captionsetup[table]{labelformat=simple, labelsep=none}
+
+\usetikzlibrary{positioning, arrows.meta}
+
+% Ben (Ulya Bayram) şu alt satırdaki ayarı yayınlanmış tezlerle aynı olacak şekilde ayarlayana kadar göbeğim çatladı. Ellemeyin!!!!
+\spaceskip=0.5em plus 0.17em minus 0.17em
+% Bu son uyarı!!! Yukarıdaki satırı elleme!!!!!!
+
+%\onehalfspacing
+\setstretch{1.5}
+\setlength{\parindent}{1.3cm}
+\setlength{\parskip}{0.5cm}  % ÇOMÜ: paragraflar arası 1 satır boşluk 6pt yapmıştık en son
+
+% ---------------- CHAPTER FORMAT ----------------
+\newcommand{\TRchaptername}{%
+  \ifcase\value{chapter}
+  \or BİRİNCİ BÖLÜM
+  \or İKİNCİ BÖLÜM
+  \or ÜÇÜNCÜ BÖLÜM
+  \or DÖRDÜNCÜ BÖLÜM
+  \or BEŞİNCİ BÖLÜM
+  \or ALTINCI BÖLÜM
+  \fi}
+
+\titleformat{\chapter}[display]
+{\centering\bfseries}
+{\TRchaptername}
+{0cm}
+{\bfseries\MakeUppercase}
+
+\titleformat{name=\chapter,numberless}[display]
+{\centering\normalsize\bfseries}
+{}{0pt}
+{\MakeUppercase}
+
+\titlespacing*{name=\chapter,numberless}{0pt}{0pt}{0pt}
+\titlespacing*{\chapter}{0pt}{-0.7cm}{0cm}
+
+\renewcommand{\chaptername}{}
+
+% ---------------- SECTION ----------------
+\renewcommand{\thesection}{\thechapter.\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+\titleformat{\section}[hang]{\normalsize\normalfont}{{\bfseries\thesection.}}{1em}{\bfseries}
+\titleformat{\subsection}[hang]{\normalsize\normalfont}{{\bfseries\thesubsection.}}{1em}{\bfseries}
+\titleformat{\subsubsection}[hang]{\normalsize\normalfont}{{\bfseries\thesubsubsection.}}{1em}{\bfseries}
+
+\titlespacing*{\section}{1.25cm}{12pt}{0cm}
+\titlespacing*{\subsection}{1.25cm}{12pt}{0cm}
+\titlespacing*{\subsubsection}{1.25cm}{12pt}{0cm}
+
+% ---------------- TOC ----------------
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforechapskip}{0pt}
+\setlength{\cftaftertoctitleskip}{0pt}
+\renewcommand{\cftdotsep}{0.3}
+% tocloft başlığını tamamen bastır — manuel başlık yazacağız
+\renewcommand{\contentsname}{}
+\renewcommand{\cfttoctitlefont}{}
+\renewcommand{\cftaftertoctitle}{\vspace{-\baselineskip}}
+\renewcommand{\bibname}{KAYNAKÇA}
+\renewcommand{\cftfigfont}{}
+\renewcommand{\cfttabfont}{}
+\renewcommand{\listfigurename}{}
+\renewcommand{\listtablename}{}
+\renewcommand{\cftloftitlefont}{}
+\renewcommand{\cftafterloftitle}{\vspace{-\baselineskip}}
+\renewcommand{\cftlottitlefont}{}
+\renewcommand{\cftafterlottitle}{\vspace{-\baselineskip}}
+
+% Bölüm formatlaması — noktalı lider, sayfa numaraları sağda
+\renewcommand{\cftchappagefont}{\normalsize}
+\setlength{\cftchapnumwidth}{0cm}
+\renewcommand{\cftchappresnum}{}
+\setlength{\cftchapindent}{0cm}
+\renewcommand{\cftchapfont}{\normalsize}
+\renewcommand{\cftchapafterpnum}{\hfill}
+
+% Custom command for two-title chapters
+\newcommand{\mybolum}[2]{%
+  \refstepcounter{chapter}%
+  \addtocontents{toc}{%
+    \protect\vspace{1cm}%
+    \protect\hbox to \linewidth{%
+      \hss
+      \protect\makebox[0pt][c]{\protect\textbf{#1}}%
+      \hss
+      \protect\pageref{ch:\thechapter}%
+    }\protect\par
+    \protect\hbox to \linewidth{%
+      \hss
+      \protect\makebox[0pt][c]{\protect\textbf{#2}}%
+      \hss
+    }\protect\par
+    \protect\vspace{1cm}% 
+  }%
+  \newpage%
+  \label{ch:\thechapter}%
+  \phantomsection%
+  \begin{center}%
+    \textbf{#1}\\[6pt]%
+    \textbf{\MakeUppercase{#2}}%
+  \end{center}%
+}
+
+% Alt başlıklar
+\renewcommand{\cftsecfont}{\normalsize}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftsecnumwidth}{1.5cm}
+
+% Şekil ve Tablo listelerine başlık adları ekle
+\renewcommand{\cftfigpresnum}{Şekil~}
+\renewcommand{\cfttabpresnum}{Tablo~}
+
+
+\setlength{\cftfignumwidth}{5.5em}
+\setlength{\cfttabnumwidth}{5.5em}
+\renewcommand{\cftfigleader}{\nobreak\hfill\nobreak}
+\renewcommand{\cfttableader}{\nobreak\hfill\nobreak}
+\renewcommand{\cftfigaftersnum}{\nobreak\hfil}
+\renewcommand{\cfttabaftersnum}{\nobreak\hfil}
+
+\setlength{\cftfigindent}{0pt}
+\setlength{\cfttabindent}{0pt}
+
+\renewcommand{\cftchapaftersnum}{}
+
+% --- Türkçe Şekil ve Tablo isimleri ---
+
+\DeclareCaptionFormat{twolines}{%
+  \normalfont #1\par\vspace{4pt}%
+  \normalfont #3%
+}
+
+
+\captionsetup[table]{
+  format=twolines,%plain,
+  %labelfont=normalfont,
+  %textfont=normalfont,
+  justification=raggedright,
+  singlelinecheck=false,
+  %labelsep=newline,
+  skip=12pt
+}
+
+\captionsetup[figure]{labelsep=period}
+
+\renewcommand{\figurename}{Şekil}
+\renewcommand{\tablename}{Tablo}
+
+%\renewcommand{\numberline}[1]{}
+
+
+\renewcommand{\cfttabpresnum}{\bfseries Tablo~}
+\renewcommand{\cfttabfont}{\normalfont}
+
+\renewcommand{\cftfigpresnum}{\bfseries Şekil~}
+\renewcommand{\cftfigfont}{\normalfont}
+
+\setlength{\cfttabindent}{0pt}
+\setlength{\cftfigindent}{0pt}
+\setlength{\cftbeforetabskip}{0pt}
+
+\renewcommand{\cftchapfont}{\normalsize\bfseries}
+\renewcommand{\cftchapafterpnum}{\hfill}
+\setlength{\cftchapindent}{0pt}
+
+%%% DEBUG KISIMLARI ALTTAKİLER UNCOMMENT ETME!
+\usepackage{showframe} 
+
+%\makeatletter
+%\typeout{LEFT MARGIN = \Gm@lmargin}
+%\makeatother
+
+%\makeatletter
+%\typeout{ODDSIDEMARGIN=\the\oddsidemargin}
+%\typeout{TEXTWIDTH=\the\textwidth}
+%\makeatother
+
+\usepackage{indentfirst}
+
+\setlength{\intextsep}{1cm}
+\setlength{\textfloatsep}{1cm}
+\setlength{\floatsep}{1cm}
+%\captionsetup[table]{skip=1cm}
+
+
+
+\begin{document}
+\normalfont
+
+
+%------------------ KAPAK ------------------%
+\begin{titlepage}
+\centering
+
+{\includegraphics[width=2cm]{logo.png}}\\[0.5cm]
+
+\textbf{T.C.}\\[0.5cm]
+
+\textbf{ÇANAKKALE ONSEKİZ MART ÜNİVERSİTESİ}\\
+\textbf{LİSANSÜSTÜ EĞİTİM ENSTİTÜSÜ}\\[1.2cm]
+
+\textbf{ELEKTRİK-ELEKTRONİK MÜHENDİSLİĞİ ANABİLİM DALI}\\[2cm]
+
+{\large \textbf{LOREM IPSUM TEZ BAŞLIĞI}}
+{\large \textbf{VE VARSA DEVAMI}}
+{\large \textbf{VE VARSA DEVAMI}}\\[1cm]
+
+\textbf{YÜKSEK LİSANS TEZİ}\\[2cm]
+
+\textbf{JANE DOE}\\[2.5cm]
+
+\textbf{Tez Danışmanı}\\
+\textbf{DR. ÖĞR. ÜYESİ ULYA BAYRAM}\\[2.5cm]
+
+\textbf{ÇANAKKALE – 2026}
+
+\end{titlepage}
+
+\newpage
+\thispagestyle{empty}
+\null
+\vfill
+
+%----------------İkinci Kapak ---------------------
+\begin{titlepage}
+\centering
+
+{\includegraphics[width=2cm]{logo.png}}\\[0.5cm]
+
+{T.C.}\\[0.5cm]
+
+{ÇANAKKALE ONSEKİZ MART ÜNİVERSİTESİ}
+{LİSANSÜSTÜ EĞİTİM ENSTİTÜSÜ}\\[1.2cm]
+
+{ELEKTRİK-ELEKTRONİK MÜHENDİSLİĞİ ANABİLİM DALI}\\[2cm]
+
+{\large \textbf{LOREM IPSUM TEZ BAŞLIĞI}}
+{\large \textbf{VE VARSA DEVAMI}}
+{\large \textbf{VE VARSA DEVAMI}}\\[1cm]
+
+{YÜKSEK LİSANS TEZİ}\\[2cm]
+
+{JANE DOE}\\[2.5cm]
+
+{Tez Danışmanı}\\
+{DR. ÖĞR. ÜYESİ ULYA BAYRAM}\\[2.5cm]
+
+{ÇANAKKALE – 2026}
+
+\end{titlepage}
+
+%------------------ KABUL SAYFASI------------------%
+\pagenumbering{roman} % Ön sayfalar i, ii, iii …
+\setcounter{page}{1}   
+
+\newpage
+\addcontentsline{toc}{section}{JÜRİ ONAY SAYFASI}
+
+\noindent
+\begin{minipage}[c]{0.14\textwidth}
+  \raggedleft
+    \includegraphics[width=2cm]{logo1.png}
+\end{minipage}%
+\begin{minipage}[c]{0.73\textwidth}
+    \centering
+    \textbf{T.C.}\\
+    \textbf{ÇANAKKALE ONSEKİZ MART ÜNİVERSİTESİ}\\
+    \textbf{LİSANSÜSTÜ EĞİTİM ENSTİTÜSÜ}
+\end{minipage}%
+\begin{minipage}[c]{0.14\textwidth}
+    \raggedright
+    \includegraphics[width=2cm]{logo.png}
+\end{minipage}
+
+\vspace{0.6cm}
+
+Jane Doe tarafından Dr. Öğr. Üyesi Ulya BAYRAM yönetiminde hazırlanan ve dd/mm/yyyy tarihinde aşağıdaki jüri karşısında sunulan \textbf{“....”} 
+başlıklı çalışma, Çanakkale Onsekiz Mart Üniversitesi Lisansüstü Eğitim Enstitüsü \textbf{Elektrik-Elektronik Mühendisliği Anabilim Dalı}'nda 
+\textbf{YÜKSEK LİSANS TEZİ} olarak oy birliği ile kabul edilmiştir.
+
+\vspace{0.1cm}
+
+\begin{tabular}{p{7.5cm}p{4.5cm}}
+\textbf{Jüri Üyeleri} & \makebox[4cm][c]{\textbf{İmza}} \\[0.8cm]
+
+\parbox[t]{7.5cm}{Dr. Öğr. Üyesi Ulya BAYRAM\\(Danışman)}
+& \makebox[4cm][c]{\dotfill} \\[0.8cm]
+
+Dr. Adı Soyadı
+& \makebox[4cm][c]{\dotfill} \\[0.8cm]
+
+Prof. Dr. Adı Soyadı
+& \makebox[4cm][c]{\dotfill} \\
+
+\end{tabular}
+
+\vspace{2.5cm}
+
+\begin{tabular}{l l}
+Tez No & : 123456 \\
+Tez Savunma Tarihi & : dd/mm/20yy
+\end{tabular}
+
+\vspace{1.5cm}
+
+\begin{flushright}
+\begin{minipage}{6cm}
+\centering
+%\rule{6cm}{0.4pt} \\[0.5cm]
+Doç. Dr. MELİS ULU DOĞRU \\
+Enstitü Müdürü \\[0.7cm]
+dd/mm/20yy
+\end{minipage}
+\end{flushright}
+
+
+\newpage
+\centerline{\normalsize\bfseries ETİK BEYAN}
+\addcontentsline{toc}{section}{ETİK BEYAN}
+\vspace{\baselineskip}
+
+
+Çanakkale Onsekiz Mart Üniversitesi Lisansüstü Eğitim Enstitüsü Tez Yazım Kuralları’na uygun olarak hazırladığım bu tez çalışmasında; tez içinde sunduğum verileri, bilgileri ve dokümanları akademik ve etik kurallar çerçevesinde elde ettiğimi, tüm bilgi, belge, değerlendirme ve sonuçları bilimsel etik ve ahlak kurallarına uygun olarak sunduğumu, tez çalışmasında yararlandığım eserlerin tümüne uygun atıfta bulunarak kaynak gösterdiğimi, kullanılan verilerde herhangi bir değişiklik yapmadığımı, bu tezde sunduğum çalışmanın özgün olduğunu, bildirir, aksi bir durumda aleyhime doğabilecek tüm hak kayıplarını kabullendiğimi taahhüt ve beyan ederim.
+
+\vspace{5cm}
+
+\begin{flushright}
+Jane DOE\\
+dd/mm/20yy
+\end{flushright}
+
+
+% ------------------- TEŞEKKÜR------------------
+\newpage
+\centerline{\normalsize\bfseries TEŞEKKÜR}
+\addcontentsline{toc}{section}{TEŞEKKÜR}
+\vspace{\baselineskip}
+
+Dr. Öğr. Üyesi Ulya BAYRAM'a bu template için teşekkür ederim :) 
+\lipsum[1-2]
+
+\vspace{\baselineskip}
+
+\begin{flushright}
+Jane DOE\\
+Çanakkale, Ay 20yy
+\end{flushright}
+\vfill
+
+%------------------ ABSTRACT (ÖZET-TR) ------------------
+\newpage
+\addcontentsline{toc}{section}{ÖZET}
+\centerline{\normalsize\bfseries ÖZET}
+
+\vspace{\baselineskip}
+
+{\centering
+\textbf{TEZ BAŞLIĞI BURADA TEKRAR YAZILACAK}\par
+}
+
+\vspace{\baselineskip}
+
+{\centering
+{Jane DOE}\\
+{Çanakkale Onsekiz Mart Üniversitesi}\\
+{Lisansüstü Eğitim Enstitüsü}\\
+{Elektrik Elektronik Mühendisliği Anabilim Dalı Yüksek Lisans Tezi}\\
+{Danışman: Dr. Öğr. Üyesi Ulya BAYRAM}\\
+{dd/mm/yyyy, TEZEVERİLECEKIDNO}\par
+}
+
+\vspace{\baselineskip}
+
+\lipsum[1-2]
+
+
+\textbf{Anahtar Kelimeler:} Lorem, Ipsum, Dolor, Sit, Amet
+
+\vfill
+
+
+%------------------ ABSTRACT (ÖZET-ENG) ------------------
+\newpage
+\centerline{\normalsize\bfseries ABSTRACT}
+\addcontentsline{toc}{section}{ABSTRACT}
+
+
+\vspace{\baselineskip}
+
+{\centering
+\textbf{THESIS TITLE BUT IN ENGLISH}\par
+}
+
+\vspace{\baselineskip}
+
+{\centering
+{Jane DOE}\\
+{Çanakkale Onsekiz Mart University}\\
+{School of Graduate Studies}\\
+{Master of Science Thesis in Electrical and Electronics Engineering}\\
+{Advisor: Assist. Prof. Dr. Ulya BAYRAM}\\
+{dd/mm/yyyy, TEZEVERİLECEKIDNO}\par
+}
+
+\vspace{\baselineskip}
+
+\lipsum[1-2]
+
+
+\textbf{Keywords:} Lorem, Ipsum, Dolor, Sit, Amet
+
+
+%------------------ İÇİNDEKİLER ------------------%
+\newpage
+\addcontentsline{toc}{section}{İÇİNDEKİLER}
+
+{\centering\normalsize\bfseries İÇİNDEKİLER\par}
+
+\vspace{\baselineskip}
+
+{\noindent\hfill\normalsize\bfseries Sayfa No\par}
+%\vspace{-0.5\baselineskip}
+\tableofcontents
+
+
+% KAVRAM VE TERİMLER
+\newpage
+\addcontentsline{toc}{section}{KAVRAM VE TERİMLER}
+\centerline{\normalsize\bfseries KAVRAM VE TERİMLER}
+
+\vspace{\baselineskip}
+
+\noindent
+\begin{tabular}{p{4cm} p{10cm}}
+LOREM & Lorem Ipsum Dolor Sit Amet Consectetur \\
+\end{tabular}
+
+
+% -------------------------- TABLOLAR DİZİNİ --------------------------
+\newpage
+\addcontentsline{toc}{section}{TABLOLAR DİZİNİ}
+\centerline{\normalsize\bfseries TABLOLAR DİZİNİ}
+
+\vspace{\baselineskip}
+
+{\noindent \normalsize\bfseries Tablo No \quad Tablo Adı \hfill Sayfa No\par}
+
+\setlength{\cftbeforetabskip}{0pt}
+\setlength{\cftbeforelottitleskip}{0.8cm}
+\setlength{\cftafterlottitleskip}{0pt}
+
+\begingroup
+\setstretch{1.5}
+\listoftables
+\endgroup
+
+% -------------------------- ŞEKİLLER DİZİNİ --------------------------
+\newpage
+\addcontentsline{toc}{section}{ŞEKİLLER DİZİNİ}
+\centerline{\normalsize\bfseries ŞEKİLLER DİZİNİ}
+
+\vspace{\baselineskip}
+
+{\noindent\normalsize\bfseries Şekil No \quad Şekil Adı \hfill \makebox[2cm][c]{Sayfa No}\par}
+
+%{\noindent\normalsize\bfseries Şekil No \quad \parbox[t]{5cm}{Şekil Adı} \hfill \makebox[2.5cm][c]{Sayfa No}\par}
+
+\setlength{\cftbeforefigskip}{0pt}
+\setlength{\cftbeforeloftitleskip}{0.8cm}
+\setlength{\cftafterloftitleskip}{0pt}
+
+\begingroup
+\setstretch{1.5}
+\raggedright
+\listoffigures
+\endgroup
+
+% Giriş Bölümü Başlangıcı
+
+
+% MAIN MATTER
+\pagenumbering{arabic}
+\mybolum{BİRİNCİ BÖLÜM}{GİRİŞ}
+
+\lipsum[1-3] \citep{loremipsum}
+
+
+% Tablo örneği
+\begin{table}[!htbp]
+\caption{Lorem Ipsum Tablo Örneği}
+\begin{tabular}{|l|p{6cm}|}
+\hline
+\textbf{Başlık 1} & \textbf{Başlık 2} \\
+\hline
+Lorem & Lorem ipsum dolor sit amet, consectetur adipiscing elit \\
+\hline
+Ipsum & Dolor sit amet, consectetur adipiscing elit sed do eiusmod \\
+\hline
+Dolor & Sit amet, consectetur adipiscing elit sed do eiusmod tempor \\
+\hline
+\end{tabular}
+\end{table}
+
+% Logo figürü
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.3\textwidth]{logo.png}
+\caption{Çanakkale Onsekiz Mart Üniversitesi Logosu. Bu örnek şekil yerine kendi şekillerinizi koyarsınız.}
+\end{figure}
+
+\section{Problem Tanımı}
+\lipsum[1-3]
+
+\section{Araştırmanın Amaç ve Hedefleri} 
+\lipsum[1-3]
+
+\section{Tezin Yapısı} 
+\lipsum[1-3]
+
+% --------------------------------------------------
+\mybolum{İKİNCİ BÖLÜM}{LİTERATÜR TARAMASI}
+
+\lipsum
+
+% Tablo örneği
+\begin{table}[ht!]
+\caption{Lorem Ipsum Tablo Örneği}
+\begin{tabular}{|l|p{6cm}|}
+\hline
+\textbf{Başlık 1} & \textbf{Başlık 2} \\
+\hline
+Lorem & Lorem ipsum dolor sit amet, consectetur adipiscing elit \\
+\hline
+Ipsum & Dolor sit amet, consectetur adipiscing elit sed do eiusmod \\
+\hline
+Dolor & Sit amet, consectetur adipiscing elit sed do eiusmod tempor \\
+\hline
+\end{tabular}
+\end{table}
+
+\lipsum
+
+\section{Lorem}
+
+\lipsum
+
+\section{Ipsum}
+\lipsum
+
+%---------------------------------------------------------------
+\mybolum{ÜÇÜNCÜ BÖLÜM}{MATERYAL VE METOT}
+
+\lipsum
+
+\section{Lorem}
+
+\lipsum
+
+\subsection{Lorem ipsum}
+
+\lipsum
+
+
+%---------------------------------------------------------------
+\mybolum{DÖRDÜNCÜ BÖLÜM}{ARAŞTIRMA BULGULARI}
+
+\section{Lorem}
+
+\lipsum[1-3]
+
+
+%---------------------------------------------------------------
+\mybolum{BEŞİNCİ BÖLÜM}{TARTIŞMA}
+
+\lipsum[1-3]
+
+%---------------------------------------------------------------
+\mybolum{ALTINCI BÖLÜM}{SONUÇ VE ÖNERİLER}
+
+\lipsum[1-3]
+
+% ---------- KAYNAKÇA ----------
+\newpage
+\addcontentsline{toc}{section}{KAYNAKÇA}
+\bibliographystyle{plainnat-tr}
+\bibliography{sample}
+
+% ---------- EKLER ----------
+\newpage
+\pagenumbering{Roman}
+\setcounter{page}{1}
+\centerline{\normalsize\bfseries EKLER}
+\addcontentsline{toc}{section}{EKLER}
+\vspace{\baselineskip}
+
+\section*{LOREM}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+% ---------- ÖZGEÇMİŞ ----------
+\newpage
+\centerline{\normalsize\bfseries ÖZGEÇMİŞ}
+\addcontentsline{toc}{section}{ÖZGEÇMİŞ}
+\vspace{\baselineskip}
+
+Adı Soyadı: Lorem Ipsum\\
+ORCID: 12345
+
+\end{document}
